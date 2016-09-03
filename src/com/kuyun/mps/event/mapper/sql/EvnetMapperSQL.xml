@@ -5,10 +5,35 @@
 <mapper namespace="com.kuyun.mps.event.mapper.EventMapper">
     <select id="getCount" resultType="java.lang.Integer">
         select count(1) from mps.t_event
+        <if test="app_code != null">
+            and app_code = #{app_code}
+        </if>
+        <if test="event_id != null">
+            and event_id = #{event_id}
+        </if>
     </select>
+    
+    
     <select id="getEventList"  parameterType="Map"  resultType="TEvent">
-        select * from mps.t_event order by app_code limit #{startNo},#{endNo}
+        select * from mps.t_event where 1=1 
+        <if test="app_code != null">
+            and app_code = #{app_code}
+        </if>
+        <if test="event_id != null">
+            and event_id = #{event_id}
+        </if>
+        limit #{startNo},#{endNo}
     </select>
+
+    <select id="getEventByEventId"  parameterType="String"  resultType="TEvent">
+        select * from mps.t_event where event_id = #{eventId}
+    </select>
+    
+    <select id="getEventByappCode"  parameterType="String"  resultType="TEvent">
+        select * from mps.t_event where app_code = #{appCode}
+    </select>
+    
+    
     <insert id="saveEvnet" parameterType="TEvent">
     	 insert into mps.t_event(
     	 	event_id,
@@ -27,5 +52,14 @@
     	 	#{score}
     	 )
     </insert>
+    
+    <!-- 删除二维码的信息 -->
+	<delete id="deleteEventById" parameterType="java.util.List" >
+		  delete  from mps.t_event where event_id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+	</delete>
+    
     
 </mapper>

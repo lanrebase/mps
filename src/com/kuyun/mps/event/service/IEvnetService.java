@@ -1,5 +1,6 @@
 package com.kuyun.mps.event.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.kuyun.mps.common.bean.Page;
@@ -42,6 +43,21 @@ public interface IEvnetService {
 	 * @param event
 	 * @return
 	 */
-	public  boolean  deleteEvent(String evnetId);
+	public  void  deleteEventById(List<String> list);
+
+
+	/**
+	 * 根据appId查询event列表
+	 * @param appId   应用Id
+	 * @return  List<TEvent>
+	 */
+	public List<TEvent> getEventByappCode(String appId);
+	
+	/**
+	 * 根据eventId查询Evnet
+	 * @param eventId   事件Id
+	 * @return  List<TEvent>
+	 */
+	public TEvent  getEventByEventId(String eventId);
 	
 }

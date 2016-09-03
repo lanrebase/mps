@@ -45,5 +45,19 @@ public interface EventMapper {
 	 * @param event
 	 * @return
 	 */
-	public  boolean  deleteEvent(String evnetId);
+	public  void  deleteEventById(List<String> list);
+
+	/**
+	 * 根据appId查询event列表
+	 * @param appId   应用Id
+	 * @return  List<TEvent>
+	 */
+	public List<TEvent> getEventByappCode(String appCode);
+
+	/**
+	 * 根据eventId查询Evnet
+	 * @param eventId   事件Id
+	 * @return  List<TEvent>
+	 */
+	public TEvent getEventByEventId(String eventId);
 }

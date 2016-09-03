@@ -5,6 +5,7 @@
 		<typeAlias alias="TMember" type="com.kuyun.mps.member.model.TMember" />
 		<typeAlias alias="TEvent" type="com.kuyun.mps.event.model.TEvent" />
 		<typeAlias alias="TGrade" type="com.kuyun.mps.grade.model.TGrade" />
+		<typeAlias alias="TApp" type="com.kuyun.mps.event.model.TApp" />
 	</typeAliases>
 </configuration>	
 

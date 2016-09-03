@@ -1,6 +1,7 @@
 package com.kuyun.mps.event.service.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +86,28 @@ public class EvnetService implements IEvnetService {
 	 * @param event
 	 * @return
 	 */
-	public boolean deleteEvent(String evnetId) {
-		return eventDao.deleteEvent(evnetId);
+	public void deleteEventById(List<String> list) {
+		eventDao.deleteEventById(list);
+	}
+	
+	
+	/**
+	 * 根据appId查询event列表
+	 * @param appId   应用Id
+	 * @return  List<TEvent>
+	 */
+	public List<TEvent> getEventByappCode(String appCode){
+		return eventDao.getEventByappCode(appCode);
+	}
+	
+	
+	
+	/**
+	 * 根据eventId查询Evnet
+	 * @param eventId   事件Id
+	 * @return  List<TEvent>
+	 */
+	public TEvent  getEventByEventId(String eventId){
+		return eventDao.getEventByEventId(eventId);
 	}
 }
