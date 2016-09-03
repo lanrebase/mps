@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC     
+    "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kuyun.mps.member.mapper.MemberMapper">
+	<sql id="queryParams">
+		<if test="memberId != null and memberId != ''">
+			and member_id = #{memberId}
+		</if>
+		<if test="appCode != null and appCode != ''">
+			and app_code = #{appCode}
+		</if>
+		<if test="memberName != null and memberName != ''">
+			and member_name = #{memberName}
+		</if>
+		<if test="isAdmin != null and isAdmin != ''">
+			and is_admin = #{isAdmin}
+		</if>
+		<if test="created != null">
+			and created = #{created}
+		</if>
+		<if test="isDel != null and isDel != ''">
+			and is_del = #{isDel}
+		</if>
+	</sql>
+
+	<select id="selectMemberCount" parameterType="java.util.Map"
+		resultType="java.lang.Integer">
+		select count(1) from t_member
+		<where>
+			<include refid="queryParams" />
+		</where>
+	</select>
+
+	<select id="selectMemberList" resultType="TMember"
+		parameterType="java.util.Map">
+		select 
+		member_id as memberId,
+		app_code as appCode,
+		member_name as memberName,
+		member_password as memberPassword,
+		member_level as memberLevel,
+		is_admin as isAdmin,
+		score as score,
+		created as created,
+		is_del as isDel
+		from t_member
+		<where>
+			<include refid="queryParams" />
+		</where>
+		order by created desc limit #{startNo},#{endNo}
+	</select>
+
+	<select id="selectMember" resultType="TMember" parameterType="TMember">
+		select * from t_member where member_id = #{memberId}
+	</select>
+
+	<insert id="saveTMember" parameterType="TMember">
+		insert into t_member(
+		member_id,
+		app_code,
+		member_name,
+		member_password,
+		member_level,
+		is_admin,
+		score,
+		created,
+		is_del
+		)
+		values(
+		#{memberId},
+		#{appCode},
+		#{memberName},
+		#{memberPassword},
+		#{memberLevel},
+		#{isAdmin},
+		#{score},
+		#{created},
+		#{isDel}
+		)
+	</insert>
+
+	<update id="revokeMember" parameterType="String">
+		update t_member set
+		is_del = '1' where member_id = #{memberId}
+	</update>
+</mapper>

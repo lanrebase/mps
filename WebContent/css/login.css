@@ -1,0 +1,23 @@
+@charset "utf-8";
+/* CSS Document */
+*{ margin:0; padding:0; font-size:9pt; font-family:Verdana;}
+body{overflow:hidden;background:#0a76b0;}
+ul{display:block; margin:0; padding:0; list-style:none;}
+li{display:block; margin:0; padding:0; list-style:none;}
+img{border:0;}
+
+.login{width:100%; position:absolute; top:50%; margin-top:-300px;}
+.userlogin{width:982px;margin:0 auto;}
+.logo{ display:block;width:982px;height:234px; margin:0 auto; background:url(../images/login01.jpg) no-repeat;}
+.loginbar{display:block; height:174px; background:url(../images/login02.jpg) no-repeat;}
+.loginbar ul{float:left; padding-left:395px; margin-top:30px; background:none; width:212px; }
+.loginbar ul li{margin-bottom:14px;_margin-bottom:12px; width:212px; overflow:hidden;}
+.loginbar ul li label{width:37px; line-height:29px; color:#dbf2ff; float:left; display:block;}
+.user{width:159px; height:29px; background:url(../images/user.png) no-repeat; display:block;float:left;}
+.password{width:159px; height:29px; background:url(../images/password.png) no-repeat; display:block;float:left;}
+.logininput{height:23px; line-height:23px; background:none; border:none; width:115px; margin-left:34px; margin-top:3px; color:#064789;}
+.loginbtn{width:82px; height:40px;background:url(../images/loginbtn.png) no-repeat; border:0; text-align:center; color:#fff; cursor:pointer;}
+.logindown{ height:112px; background:url(../images/login03.jpg) no-repeat;}
+.systeminfo{height:75px; background:url(../images/login04.jpg) no-repeat; color:#025e9e;}
+.systeminfo span{display:block; float:left; padding-left:355px; margin-top:16px;}
+

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC     
+    "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kuyun.mps.grade.mapper.GradeMapper">
+
+	<select id="selectGradeByName" resultType="java.lang.Integer"
+		parameterType="TGrade">
+		select count(1) from t_grade where grade_name = #{gradeName}
+	</select>
+	
+	<select id="selectGradeByLevel" resultType="java.lang.Integer"
+		parameterType="TGrade">
+		select count(1) from t_grade where grade_level = #{gradeLevel}
+	</select>
+
+	<select id="selectGradeList" resultType="TGrade"
+		parameterType="TGrade">
+		select 
+		grade_id as gradeId,
+		grade_name as gradeName,
+		grade_level as gradeLevel,
+		max_score as maxScore,
+		min_score as minScore,
+		created as created,
+		state as state
+		from t_grade order by grade_level, created desc
+	</select>
+	
+	<select id="selectTGrade" resultType="TGrade"
+		parameterType="java.lang.String">
+		select 
+		grade_id as gradeId,
+		grade_name as gradeName,
+		grade_level as gradeLevel,
+		max_score as maxScore,
+		min_score as minScore,
+		created as created,
+		state as state
+		from t_grade where grade_id = #{gradeId}
+	</select>
+
+	<insert id="saveTGrade" parameterType="TGrade">
+		insert into t_grade(
+		grade_level,
+		grade_name,
+		max_score,
+		min_score,
+		created,
+		state
+		)
+		values(
+		#{gradeLevel},
+		#{gradeName},
+		#{maxScore},
+		#{minScore},
+		#{created},
+		#{state}
+		)
+	</insert>
+	<update id="updateTGrade" parameterType="TGrade">
+	    update t_grade set 
+	    grade_level = #{gradeLevel},
+	    grade_name = #{gradeName},
+	    max_score = #{maxScore},
+	    min_score = #{minScore}
+	    where grade_id = #{gradeId}
+	</update>
+	
+	<delete id="deleteTGrade" >
+		delete from  t_grade where grade_id = #{gradeId}
+	</delete>
+</mapper>
