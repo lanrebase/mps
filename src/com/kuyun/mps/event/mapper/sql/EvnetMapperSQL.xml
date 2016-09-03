@@ -3,26 +3,29 @@
     "-//mybatis.org//DTD Mapper 3.0//EN"    
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kuyun.mps.event.mapper.EventMapper">
-    <select id="getCount" resultType="java.lang.Integer">
+    <sql id="queryParams">
+		<if test="eventName != null and eventName != ''">
+			and event_name = #{eventName}
+		</if>
+		<if test="appCode != null and appCode != ''">
+			and app_code = #{appCode}
+		</if>
+	</sql>
+    
+    <select id="getCount" resultType="java.lang.Integer" parameterType="java.util.Map">
         select count(1) from mps.t_event
-        <if test="app_code != null">
-            and app_code = #{app_code}
-        </if>
-        <if test="event_id != null">
-            and event_id = #{event_id}
-        </if>
+        <where>
+			<include refid="queryParams" />
+		</where>
     </select>
     
     
-    <select id="getEventList"  parameterType="Map"  resultType="TEvent">
-        select * from mps.t_event where 1=1 
-        <if test="app_code != null">
-            and app_code = #{app_code}
-        </if>
-        <if test="event_id != null">
-            and event_id = #{event_id}
-        </if>
-        limit #{startNo},#{endNo}
+    <select id="getEventList"  parameterType="java.util.Map"  resultType="TEvent">
+        select * from mps.t_event 
+        <where>
+			<include refid="queryParams" />
+		</where>
+         limit #{startNo},#{endNo}
     </select>
 
     <select id="getEventByEventId"  parameterType="String"  resultType="TEvent">

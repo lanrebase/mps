@@ -45,7 +45,7 @@ public class AppController {
 			if (null != appList && !appList.isEmpty()) {
 				for (int i = 0; i < appList.size(); i++) {
 					TApp app = appList.get(i);
-					strSelect.append("<option  value='"+ app.getApp_code() + "'>"+ app.getApp_code() + "|"+ app.getApp_name() + "<option>");
+					strSelect.append("<option  value='"+ app.getApp_code() + "'>"+ app.getApp_name() + "<option>");
 				}
 			}
 			response.setCharacterEncoding("UTF-8");

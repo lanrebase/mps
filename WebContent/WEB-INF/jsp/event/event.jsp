@@ -8,19 +8,183 @@
 <title>无标题文档</title>
 <link href="<%=request.getContextPath()%>/css/table.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/css/common.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.4.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.7.2.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/layout.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/layer.js"></script>
 
 <script type="text/javascript">
+
+    $(document).ready(function() {
+    // 加载下拉列表的值
+    $.ajax({
+        type:"get", 
+        url:"/mps/app/getAppListString.do",   
+        dataType:'text',
+        success: function(responseText){
+             $("#applist").append(responseText);
+             $("#addapplist").append(responseText);
+             
+        },
+        error: function(responseText){
+            alert("加载下拉列表失败");
+        }
+    });
+    
+    
+    
+    //根据appcode和evnetId查询事件列表
+    $.ajax({
+        type:"get", 
+        url:"/mps/event/getEventList.do", 
+        data:"eventId=''&appCode=''&pageNo=1",
+        dataType:'text',
+        success: function(responseText){
+        	 $("#tableBody").empty();
+             $("#tableBody").append(responseText);
+        },
+        error: function(responseText){
+            alert("加载下拉列表失败");
+        }
+    });
+    
+   });
+
+    
+    function getEventByappId(){
+    	
+    }
+
     // 新增事件 
     function   addEvent(){
     	layerAction('eventadd');
     }
-    
-    function submit(){
-    	$("#").submit();
+     
+
+    // 删除
+    function deleteEventById(eventId){
+    	var eventId = chk_event;
+    	$.ajax({
+            type:"get", 
+            url:"/mps/event/deleteEventById.do", 
+            data:"eventId="+eventId,
+            dataType:'text',
+            success: function(responseText){
+            	alert(responseText);
+                 //删除成功，刷新页面
+            	var appCode = $("#applist").val();
+             	var eventId = $("#eventList").val();
+             	$.ajax({
+                     type:"get", 
+                     url:"/mps/event/getEventList.do", 
+                     data:"eventId="+eventId+"&appCode="+appCode+"&pageNo=1",
+                     dataType:'text',
+                     success: function(responseText){
+                     	 alert("查询成功");
+                     	 $("#tableBody").empty();
+                         $("#tableBody").append(responseText);
+                     },
+                     error: function(responseText){
+                         alert("查询事件列表失败");
+                     }
+                 });
+            },
+            error: function(responseText){
+                alert("加载下拉列表失败");
+            }
+        });	
     }
+    
+    function updateEventById(eventId){
+   		$.ajax({
+              type:"get", 
+              url:"/mps/event/getEventByEventId.do", 
+              data:"eventId="+chk_event,
+              dataType:'text',
+              success: function(responseText){
+               	 var eventArray = responseText.split(",");
+               	 $("#addapplist").val(eventArray[0]);
+               	 $("#event_name").val(eventArray[2]);
+               	 $("#event_desc").val(eventArray[3]);
+               	 $("#op_type").val(eventArray[4]);
+               	 $("#score").val(eventArray[5]);
+               	 layerAction('eventadd');
+              },
+              error: function(responseText){
+                  alert("查询事件列表失败");
+              }
+        });
+    }
+
+    function  checkAllEvent(){
+    	if($(".checkAll").attr("checked")){    //判断chk_all是否被选中
+    		$("input[name='checkEvent']").attr("checked",false); //反选
+    	}else{
+    		$("input[name='checkEvent']").attr("checked",true);//全选
+    	}
+    }
+    
+    
+    // 查询事件列表
+    function  queryevent(){
+    	var appCode = $("#applist").val();
+    	var eventName = $("#eventList").val();
+    	$.ajax({
+            type:"get", 
+            url:"/mps/event/getEventList.do", 
+            data:"eventName="+eventName+"&appCode="+appCode+"&pageNo=1",
+            dataType:'text',
+            success: function(responseText){
+            	 $("#tableBody").empty();
+                 $("#tableBody").append(responseText);
+            },
+            error: function(responseText){
+                alert("查询事件列表失败");
+            }
+        });
+    }
+    
+    // 事件提交
+    function  eventSubmit(){
+    	var  app_code =  $("#addapplist").val();
+    	var  event_name = $("#event_name").val();
+    	var  event_desc = $("#event_desc").val();
+    	var  op_type = $("#op_type").val();
+    	var  score = $("#score").val();
+    	$.ajax({
+            type:"psot", 
+            url:"/mps/event/saveEvent.do", 
+            data:"app_code="+app_code+"&event_name="+event_name+"&event_desc="+event_desc+"&op_type="+op_type+"&score="+score,
+            dataType:'text',
+            success: function(responseText){
+            	 alert("添加成功");	 
+            },
+            error: function(responseText){
+                alert("查询事件列表失败");
+            }
+        });
+    }
+    
+    
+    function goPage(pageNo){
+    	$("#pageNo").val(pageNo);
+    	$("#memberForm").submit();
+    }
+    
+    
+    function goPageNo(){
+    	var go = $("#goPageNo").val();
+    	var pageCount = $("#pageCount").val();
+    	if(parseInt(go) < 1){
+    		alert("输入页数不正确！");
+    		return;
+    	}
+    	if(parseInt(go) > parseInt(pageCount)){
+    		alert("输入页数不正确！");
+    		return;
+    	}
+    	$("#pageNo").val(go);
+    	$("#memberForm").submit();
+    } 
 
    
 </script>
@@ -31,84 +195,36 @@
     <td width="40" align="center"><img src="<%=request.getContextPath()%>/images/search.gif" width="32" height="32" /></td>
     <td width="46" class="cx">查询</td>
     <td width="85" align="center">应用名称：</td>
-    <td width="106"><input name="textfield" type="text" class="searchinput" id="textfield" /></td>
+    <td width="150">
+       <select id="applist" style="height: 26px;width: 150px;" onchange="getEventByappId()"></select>
+    </td>
     <td width="20">&nbsp;</td>
     <td width="85" align="center">事件名称：</td>
-    <td width="106"><input name="textfield" type="text" class="searchinput" id="textfield" /></td>
+    <td width="150">
+       <input id="eventList" style="height: 24px;width: 150px;" ></input>
+    </td>
     <td>
       <label>
-        <input type="submit" name="button" id="button" value="查询" class="searchbtn" />
+        &nbsp;&nbsp;&nbsp;&nbsp;<input type="button"  value="查询" class="searchbtn"  onclick="queryevent()"/>
+        &nbsp;&nbsp;&nbsp;&nbsp;<input type="button"  value="添加" class="searchbtn"  onclick="addEvent()"/>
       </label>
     </td>
     </tr>
 </table>
-<div style="height: 20px;"></div>
+<div style="height: 20px;"  ></div>
+<div id="tableBody">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tablelist">
   <tr>
-    <th width="3%" style="border-left:none;"><input name="" type="checkbox" value="" /></th>
     <th width="10%">应用名称</th>
     <th width="12%">事件ID</th>
-    <th width="20%">事件名称</td>
+    <th width="20%">事件名称</th>
     <th width="35%">事件描述</th>
     <th width="10%">操作类型</th>
     <th width="10%">积分</th>
   </tr>
-  <c:forEach var="event" items="${eventPage.result}" varStatus="vstatus">
-  <tr>
-    <td class="tdleft"><span style="border-left:none;">
-      <input name="input" type="checkbox" value="" />
-      </span>
-    </td>
-    <td class="tdl">${event.app_code}</td>
-    <td class="tdright">${event.event_id}</td>
-    <td class="tdright">${event.event_name}</td>
-    <td class="tdright">${event.event_desc}</td>
-    <td class="tdright">${event.op_type}</td>
-    <td class="tdright">${event.score}</td>
-  </tr>
-  </c:forEach>
-  <tr>
-    <td colspan="8" class="page"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-      <tr>
-        <td><img src="<%=request.getContextPath()%>/images/jt1.gif" width="4" height="7" /> 共 135 条记录，每页 10 条</td>
-        <td style="text-indent:opx; padding-right:8px;"><table width="320" border="0" align="right" cellpadding="0" cellspacing="0">
-          <tr>
-            <td>首页</td>
-            <td><img src="<%=request.getContextPath()%>/images/pleft.gif" width="12" height="12" /></td>
-            <td>1/3页</td>
-            <td><img src="<%=request.getContextPath()%>/images/pright.gif" width="12" height="12" /></td>
-            <td>尾页</td>
-            <td>转到第</td>
-            <td><label>
-              <input type="text" name="textfield" id="textfield"  class="pageinput" />
-            </label></td>
-            <td>页</td>
-            <td><img src="<%=request.getContextPath()%>/images/go.gif" width="16" height="16" /></td>
-            <td>转</td>
-          </tr>
-        </table></td>
-      </tr>
-    </table></td>
-  </tr>
 </table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td align="center">
-    <div style="padding-left: 200px;padding-top: 20px;">
-    <ul class="btnlist">
-	    <li onclick="addEvent()"><a href="#"><span><img src="<%=request.getContextPath()%>/images/btn01.gif" alt="添加" /></span>添加</a></li>
-	    <li onclick="deleteEvent()"><a href="#"><span><img src="<%=request.getContextPath()%>/images/btn01.gif" alt="添加" /></span>删除</a></li>
-	    <li onclick="updateEvent()"><a href="#"><span><img src="<%=request.getContextPath()%>/images/btn01.gif" alt="添加" /></span>修改</a></li>
-	    <li><a href="#"><span><img src="<%=request.getContextPath()%>/images/btn02.gif" alt="导出到Excel" /></span>导出到Excel</a></li>
-	    
-    </ul>
-    </div>
-    
-    </td>
-  </tr>
-</table>
+</div>
 <div class="mdl commonLayer" id="eventadd" style="display: none;">  
-<form action="<%=request.getContextPath()%>/event/saveEvent.do" method="post"  id="eventForm" > 
  <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td class="mtop"><table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -136,14 +252,14 @@
                 <td class="edittdleft">应用名称：</td>
                 <td>
 	                 <label>
-	                  <input type="text" name="app_code" id="app_code" class="addinpu">
+	                  <select id="addapplist" style="height: 28px;width: 170px;" ></select>
 	                  <code>*</code>
 	                 </label>
                 </td>
                 <td class="edittdleft">事件名称：</td>
                 <td>
 	                 <label>
-	                  <input type="text" name="event_name" id="evnet_name" class="addinpu">
+	                  <input type="text" name="event_name" id="event_name" class="addinpu">
 	                  <code>*</code>
 	                 </label>
                 </td>
@@ -151,7 +267,10 @@
               <tr>
                 <td valign="top" class="edittdleft">操作类型：</td>
                 <td><label>
-                   <input type="text" name="op_type" id="op_type" class="addinpu">
+                   <select  name="op_type" id="op_type" class="addinpu">
+                       <option value="1">加分项</option>
+                       <option value="0">减分项</option>
+                   </select>
 	               <span >*</span>
                 </label></td>
                 <td valign="top" class="edittdleft">积分数：</td>
@@ -165,13 +284,13 @@
               <tr>
                 <td valign="top" class="edittdleft">事件描述：</td>
                 <td colspan="3"><label>
-                  <textarea name="event_desc" id="textarea" cols="45" rows="40" class="addtext"></textarea>
+                  <textarea name="event_desc" id="event_desc" cols="45" rows="40" class="addtext"></textarea>
                 </label></td>
               </tr>
               
               <tr>
                 <td class="edittdleft">&nbsp;</td>
-                <td style="padding-top:8px;"><input name="input"  type="button" value="提交" class="tbtn" onclick="submit()"/>
+                <td style="padding-top:8px;"><input name="input"  type="button" value="提交" class="tbtn" onclick="eventSubmit()"/>
                   &nbsp;&nbsp;&nbsp;
                   <input name="input" type="button" value="取消"  onclick="closeAction()"class="tbtn"/></td>
               </tr>
@@ -197,7 +316,6 @@
     </table></td>
   </tr>
 </table>
-</form>
 </div>
 
 </body>

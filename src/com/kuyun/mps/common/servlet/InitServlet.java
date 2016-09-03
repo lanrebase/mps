@@ -1,14 +1,13 @@
 package com.kuyun.mps.common.servlet;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 
 import org.apache.log4j.Logger;
 
 import com.kuyun.mps.common.constant.ConfigConstants;
 
-@WebServlet("/InitServlet")
+
 public class InitServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;

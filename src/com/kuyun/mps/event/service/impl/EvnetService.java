@@ -43,6 +43,8 @@ public class EvnetService implements IEvnetService {
 		@SuppressWarnings("rawtypes")
 		Map paramsMap = new HashMap();
 		paramsMap.put("startNo", startNo);
+		paramsMap.put("eventName", map.get("eventName"));
+		paramsMap.put("appCode", map.get("appCode"));
 		paramsMap.put("endNo", endNo);
 		return new Page(eventDao.getEventList(paramsMap), count, pageNo,
 				pageSize);

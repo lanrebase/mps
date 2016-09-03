@@ -63,7 +63,7 @@
         <li>
         	<h3 class="linktitle"><span><img src="images/leftlist2.gif" alt="打开" /></span>积分事件管理</h3>
         	<ol class="linkOl" style="display:block">
-            <li class="tabLink" id="2" tabName="事件源设置" url="<%=path %>/event/getEventList.do" ><span><img src="images/leftlist3.gif" /></span>事件源设置</li>
+            <li class="tabLink" id="2" tabName="事件源设置" url="<%=path %>/event/initEventPage.do" ><span><img src="images/leftlist3.gif" /></span>事件源设置</li>
           	</ol>
         </li>
         <li>

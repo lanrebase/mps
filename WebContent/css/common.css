@@ -13,7 +13,7 @@ img{border:none;}
 .qinfo p{display:block; float:left; margin:0; padding:0; margin-left:20px; line-height:25px;}
 .qbtn{padding-left:114px; margin-top:15px; clear:both;}
 .tbtn{height:29px; line-height:29px;width:61px; text-align:center; background:url(../images/qbtnbg.gif) repeat-x; border:none; color:#014265; cursor:pointer;}
-.mdl{width:467px; height:276px; table-layout:fixed;position: absolute;z-index: 500; display:none;}
+.mdl{width:667px; height:276px; table-layout:fixed;position: absolute;z-index: 500; display:none;}
 .mtop{height:38px; line-height:38px;}
 .mtl{width:14px;height:38px; background:url(../images/mleft.png) no-repeat;}
 .mtc{background:url(../images/mcenter.png) repeat-x;height:38px;}

@@ -9,7 +9,7 @@ public class GlobalConstants {
     /** “否”对应值 */
     public static final String NO_VALUE = "0";
     
-    public static final int DEFAULT_PAGE_SIZE = 5;
+    public static final int DEFAULT_PAGE_SIZE = 15;
     
     public static final String DEFAULT_PASSWORD  = "123456";
 

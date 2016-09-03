@@ -56,7 +56,7 @@ public class EventController {
 	public String getEventList(HttpServletRequest request) {
 		Map<String, String> map = new HashMap<String, String>();
 		String pageNo = request.getParameter("pageNo");
-		String eventId = request.getParameter("eventId");
+		String eventName = request.getParameter("eventName");
 		String appCode = request.getParameter("appCode");
 		if (pageNo == null || "".equals(pageNo)) {
 			pageNo = "1";
@@ -64,7 +64,7 @@ public class EventController {
 		String pageSize = GlobalConstants.DEFAULT_PAGE_SIZE + "";
 		map.put("pageNo", pageNo);
 		map.put("pageSize", pageSize);
-		map.put("eventId", eventId);
+		map.put("eventName", eventName);
 		map.put("appCode", appCode);
 		Page eventPage = eventService.getEventList(map);
 		request.setAttribute("eventPage", eventPage);
@@ -73,28 +73,37 @@ public class EventController {
 
 
 	/**
+	 * @throws IOException 
 	 * 查询产品List
 	 * 
 	 * @param request
 	 * @return
+	 * @throws  
 	 */
 	@RequestMapping(value = "/saveEvent.do", method = RequestMethod.POST)
-	public String saveEvent(HttpServletRequest request) {
-		String app_code = request.getParameter("app_code");
-		String event_name = request.getParameter("event_name");
-		String event_desc = request.getParameter("event_desc");
-		String op_type = request.getParameter("op_type");
-		String score = request.getParameter("score");
-		TEvent  event = new  TEvent();
-		event.setApp_code(app_code);
-		event.setEvent_name(event_name);
-		event.setEvent_desc(event_desc);
-		event.setOp_type(op_type);
-		event.setScore(Integer.parseInt(score));
+	public void saveEvent(HttpServletRequest request,HttpServletResponse response) throws IOException   {
+		try{
+			String app_code = request.getParameter("app_code");
+			String event_name = request.getParameter("event_name");
+			String event_desc = request.getParameter("event_desc");
+			String op_type = request.getParameter("op_type");
+			String score = request.getParameter("score");
+			TEvent  event = new  TEvent();
+			event.setApp_code(app_code);
+			event.setEvent_name(event_name);
+			event.setEvent_desc(event_desc);
+			event.setOp_type(op_type);
+			event.setScore(Integer.parseInt(score));
+			eventService.saveEvent(event);
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().print("添加成功");
+		}catch(IOException e){
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().print("添加失败");
+		}
 		
-		eventService.saveEvent(event);
         
-		return "/event/event";
+		
 	}
 
 	
